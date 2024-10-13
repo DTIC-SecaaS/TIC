@@ -1,0 +1,21 @@
+# Ignorar archivos de configuración de IDE
+*.idea/
+*.vscode/
+
+# Ignorar archivos de compilación
+/build/
+dist/
+
+# Ignorar archivos de dependencias
+node_modules/
+venv/
+
+# Ignorar archivos de registro
+*.log
+
+# Ignorar archivos temporales
+*.tmp
+*.bak
+
+# Ignorar archivos de entorno
+.env
