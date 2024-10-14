@@ -1,33 +1,52 @@
-import { useEffect, useState } from "react";
-import Keycloak from "./Keycloak"; // Importa la instancia única de Keycloak
+// AuthProvider.jsx
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+import keycloak from "../auth/Keycloak"; // Asegúrate de que la ruta sea correcta
+
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [keycloakInitialized, setKeycloakInitialized] = useState(false);
-  const [authenticated, setAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isKeycloakInitialized, setIsKeycloakInitialized] = useState(false);
+  const isRun = useRef(false); // Referencia para asegurarnos de que la inicialización se haga solo una vez
 
   useEffect(() => {
-    if (!keycloakInitialized) {
-      // Verifica que Keycloak no esté ya inicializado
-      Keycloak.init({ onLoad: "login-required" })
-        .then((authenticated) => {
-          setAuthenticated(authenticated);
-          setKeycloakInitialized(true);
-        })
-        .catch((error) => {
-          console.error("Keycloak initialization failed", error);
-        });
-    }
-  }, [keycloakInitialized]); // Dependencia para evitar múltiples inicializaciones
+    if (isRun.current) return; // Evita re-inicializar
 
-  // Muestra un mensaje de carga hasta que Keycloak esté inicializado
-  if (!keycloakInitialized) {
-    return <div>Cargando autenticación...</div>;
-  }
+    isRun.current = true;
 
-  // Si el usuario no está autenticado, redirige automáticamente a la página de login
-  if (!authenticated) {
-    return <div>Redirigiendo al login...</div>;
-  }
+    keycloak
+      .init({
+        onLoad: "check-sso",
+        checkLoginIframe: false,
+      })
+      .then((auth) => {
+        setIsAuthenticated(auth);
+        setIsKeycloakInitialized(true);
+      });
+  }, []);
 
-  return children; // Si está autenticado, renderiza la aplicación
+  const login = () => {
+    keycloak.login();
+  };
+
+  const logout = () => {
+    keycloak.logout();
+    setIsAuthenticated(false);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{ isAuthenticated, isKeycloakInitialized, login, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
+
+export const useAuthContext = () => useContext(AuthContext);

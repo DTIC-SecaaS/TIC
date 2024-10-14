@@ -6,8 +6,6 @@ import Dashboard from "./dashboard/Dashboard.jsx";
 import Vulnerabilities from "./vulnerabilities/Vulnerabilities.jsx";
 // import { AuthProvider } from "./auth/AuthProvider";
 import App from "./App.jsx";
-import { ReactKeycloakProvider } from "@react-keycloak/web";
-import Keycloak from "./auth/Keycloak.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +27,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <ReactKeycloakProvider keycloak={Keycloak}>
+  <StrictMode>
     <App />
-  </ReactKeycloakProvider>
+  </StrictMode>
 );
