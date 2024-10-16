@@ -12,7 +12,7 @@ import { AuthProvider, useAuthContext } from "./auth/AuthProvider";
 import Vulnerabilities from "./components/vulnerabilities/Vulnerabilities";
 import NotFoundPage from "./components/pageNotFound/PageNotFound";
 import Assets from "./components/assets/Assets";
-import Analysis from "./components/analysis/Analysis";
+// import Analysis from "./components/analysis/Analysis";
 
 function App() {
   return (
@@ -52,10 +52,10 @@ const AuthRoutes = () => {
         path="/assets"
         element={isAuthenticated ? <Assets /> : <Navigate to="/" />}
       />
-      <Route
+      {/*<Route
         path="/analysis"
         element={isAuthenticated ? <Analysis /> : <Navigate to="/" />}
-      />
+      />*/}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
