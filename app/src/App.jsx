@@ -7,9 +7,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import LoginPage from "./LoginPage";
-import Dashboard from "./dashboard/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 import { AuthProvider, useAuthContext } from "./auth/AuthProvider";
-import Vulnerabilities from "./vulnerabilities/Vulnerabilities";
+import Vulnerabilities from "./components/vulnerabilities/Vulnerabilities";
+import NotFoundPage from "./components/pageNotFound/PageNotFound";
+import Assets from "./components/assets/Assets";
+import Analysis from "./components/analysis/Analysis";
 
 function App() {
   return (
@@ -45,7 +48,15 @@ const AuthRoutes = () => {
         path="/vulns"
         element={isAuthenticated ? <Vulnerabilities /> : <Navigate to="/" />}
       />
-      {/* Agrega más rutas según sea necesario */}
+      <Route
+        path="/assets"
+        element={isAuthenticated ? <Assets /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/analysis"
+        element={isAuthenticated ? <Analysis /> : <Navigate to="/" />}
+      />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

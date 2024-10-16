@@ -2,6 +2,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AnalyticsRoundedIcon from "@mui/icons-material/AnalyticsRounded";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import TroubleshootRoundedIcon from "@mui/icons-material/TroubleshootRounded";
 // import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 // import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 
@@ -18,6 +19,12 @@ export const menuContentMainItems = [
     text: "Activos",
     icon: <AssignmentRoundedIcon />,
     route: "/assets",
+  },
+  {
+    key: "analysis",
+    text: "Análisis",
+    icon: <TroubleshootRoundedIcon />,
+    route: "/analysis",
   },
 ];
 
@@ -80,6 +87,12 @@ export const vulnsItems = [
   { key: "risk", text: "Riesgo" },
   { key: "service", text: "Servicio" },
   { key: "vulnerabilities", text: "Vulnerabilidades" },
+];
+
+export const assetItems = [
+  { key: "assets", text: "Activos" },
+  { key: "name", text: "Nombre" },
+  { key: "ip", text: "URL / IP" },
 ];
 
 export const getOptionTextByKey = (options, key) => {
