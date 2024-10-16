@@ -18,7 +18,7 @@ export default function Header({ currentMenu }) {
         width: "100%",
         alignItems: { xs: "flex-start", md: "center" },
         justifyContent: "space-between",
-        maxWidth: { sm: "100%", md: "95%" },
+        maxWidth: { sm: "100%", md: "100%" },
         pt: 1,
       }}
       spacing={2}

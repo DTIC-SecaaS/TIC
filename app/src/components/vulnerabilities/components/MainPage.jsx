@@ -11,8 +11,8 @@ export default function MainPage() {
   return (
     <Box
       sx={{
-        width: "95%",
-        maxWidth: { sm: "100%", md: "1700px" },
+        width: "100%",
+        // maxWidth: { sm: "100%", md: "100%" },
         margin: 0,
         "& .super-app-theme--header": {
           backgroundColor: "rgb(90, 104, 133)",
