@@ -8,7 +8,7 @@ asset_repository = AssetRepository()
 @assets_bp.route('/assets', methods=['GET'])
 def get_assets():
     assets = asset_repository.get_all_assets()
-    if assets.count() == 0:
+    if len(assets) == 0:
         return jsonify({'message': 'No existen activos', 'code': '204'}), 204
     return jsonify({'data': assets, 'code': '200'}), 200
 

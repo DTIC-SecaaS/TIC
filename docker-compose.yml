@@ -1,15 +1,29 @@
 
 services:
-  backend:
-    container_name: backend
+  # backend:
+  #   container_name: backend
+  #   build:
+  #     context: ./services
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - mongodb
+  #   networks: 
+  #     - tic_network
+  assetservice:
     build:
-      context: ./services
+      context: ./services/AssetService  # Ruta hacia el Dockerfile del microservicio
+    container_name: assetservice
     ports:
-      - "5000:5000"
+      - "5000:5000"  # Exponiendo el puerto donde correrá AssetService
+    env_file:
+      - ./services/AssetService/.env
     depends_on:
       - mongodb
     networks: 
       - tic_network
+    environment:
+      - FLASK_ENV=development
 
   # frontend:
   #   build:

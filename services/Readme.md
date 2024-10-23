@@ -15,6 +15,12 @@
 - ejecutar archivo docker-compose.yml
   `docker compose up ---build`
 
+- para ejecutar solo un servicio del docker
+  `docker-compose up nombre_servicio`
+
+- para ejecutar el Dockerfile desde cero
+  `docker compose build --no-cache nombre_servicio`
+
 <!-- # configuracion BDD
 username: MongoDB
 password: admin -->
