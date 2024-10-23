@@ -14,3 +14,7 @@
 
 - ejecutar archivo docker-compose.yml
   `docker compose up ---build`
+
+<!-- # configuracion BDD
+username: MongoDB
+password: admin -->

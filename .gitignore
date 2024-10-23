@@ -19,3 +19,10 @@ venv/
 
 # Ignorar archivos de entorno
 .env
+
+# Ignorar archivos de caché de python
+*.pyc
+__pycache__/
+
+#Ignorar archivos de gestion de dependencias
+Pipfile.lock
