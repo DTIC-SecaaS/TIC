@@ -22,14 +22,14 @@ class AssetRepository:
 
     def create_asset(self, data):
         # Check if Url already exists
-        existing_asset = self.collection.find_one({'url_or_ip': data['url_or_ip']})
+        existing_asset = self.collection.find_one({'ip': data['ip']})
         if existing_asset:
             return None
         
         asset = AssetModel(
             name=data['name'],
             description=data['description'],
-            url_or_ip=data['url_or_ip'],
+            ip=data['ip'],
             status=data['status']
         )
         result = self.collection.insert_one(asset.to_dict())
@@ -41,7 +41,7 @@ class AssetRepository:
             {'$set': {
                 'name': data['name'],
                 'description': data['description'],
-                'url_or_ip': data['url_or_ip'],
+                'ip': data['ip'],
                 'status': data['status']
             }}
         )

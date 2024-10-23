@@ -31,7 +31,7 @@ def create_asset():
         "asset_id": asset_id,
         "name": data['name'],
         "description": data['description'],
-        "url_or_ip": data['url_or_ip'],
+        "ip": data['ip'],
         "status": data['status']
     }, 'code': '201'}), 201
 
