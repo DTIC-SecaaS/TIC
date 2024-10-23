@@ -93,6 +93,14 @@ export const assetItems = [
   { key: "assets", text: "Activos" },
   { key: "name", text: "Nombre" },
   { key: "ip", text: "URL / IP" },
+  { key: "description", text: "Descripción" },
+  { key: "status", text: "Estado" },
+];
+
+export const analysisItems = [
+  { key: "analysis", text: "Análisis" },
+  { key: "name", text: "Nombre" },
+  { key: "ip", text: "URL / IP" },
 ];
 
 export const getOptionTextByKey = (options, key) => {

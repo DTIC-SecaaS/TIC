@@ -58,10 +58,7 @@ import {
   GridToolbarContainer,
   GridActionsCellItem,
 } from "@mui/x-data-grid";
-import {
-  columns as initialColumns,
-  rows as initialRows,
-} from "../internals/gridDataAssets";
+import { columns, useAssetsData } from "../internals/gridDataAssets";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -71,31 +68,39 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function AssetDataGrid() {
-  const [rows, setRows] = React.useState(initialRows);
+  // const [rows, setRows] = React.useState(initialRows);
   const [open, setOpen] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState(null);
   const [newName, setNewName] = React.useState("");
   const [newIp, setNewIp] = React.useState("");
+  const [newDescription, setNewDescription] = React.useState("");
+  const [newStatus, setNewStatus] = React.useState("Inactivo");
 
-  const handleDeleteClick = (id) => {
-    setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-  };
+  const { rows, handleAddAsset, handleUpdateAsset, handleDeleteAsset } =
+    useAssetsData();
 
   const handleEditClick = (row) => {
     setSelectedRow(row);
     setNewName(row.name);
     setNewIp(row.ip);
+    setNewDescription(row.description);
+    setNewStatus(row.status);
     setIsEditing(true);
     setOpen(true);
   };
 
   const handleAddClick = () => {
-    console.log("Agregando");
     setNewName("");
     setNewIp("");
+    setNewDescription("");
+    setNewStatus(false);
     setIsEditing(false);
     setOpen(true);
   };
@@ -105,45 +110,73 @@ export default function AssetDataGrid() {
     setSelectedRow(null);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    const newAsset = {
+      name: newName,
+      ip: newIp,
+      description: newDescription,
+      status: newStatus,
+    };
     if (isEditing && selectedRow) {
-      setRows((prevRows) =>
-        prevRows.map((row) =>
-          row.id === selectedRow.id ? { ...row, name: newName, ip: newIp } : row
-        )
-      );
+      await handleUpdateAsset(selectedRow._id, newAsset);
     } else {
-      const newId = rows.length + 1;
-      const newRow = { id: newId, name: newName, ip: newIp };
-      setRows((prevRows) => [...prevRows, newRow]);
+      await handleAddAsset(newAsset);
     }
     handleClose();
   };
 
+  // const handleDeleteClick = (id) => {
+  //   setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+  // };
+
   // Añade la columna de acciones (editar y eliminar)
-  const columns = [
-    ...initialColumns,
-    {
-      field: "actions",
-      headerName: "Acciones",
-      type: "actions",
-      minWidth: 250,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<EditIcon />}
-          label="Editar"
-          color="secondary"
-          sx={{ height: 30 }}
-          onClick={() => handleEditClick(params.row)}
-        />,
-        <GridActionsCellItem
-          icon={<DeleteIcon />}
-          label="Eliminar"
-          onClick={() => handleDeleteClick(params.id)}
-        />,
-      ],
-    },
-  ];
+  // const columns = [
+  //   ...initialColumns,
+  //   {
+  //     field: "actions",
+  //     headerName: "Acciones",
+  //     type: "actions",
+  //     headerClassName: "super-app-theme--header",
+  //     minWidth: 100,
+  //     getActions: (params) => [
+  //       <GridActionsCellItem
+  //         icon={<EditIcon />}
+  //         label="Editar"
+  //         color="secondary"
+  //         sx={{ height: 30 }}
+  //         onClick={() => handleEditClick(params.row)}
+  //       />,
+  //       <GridActionsCellItem
+  //         icon={<DeleteIcon />}
+  //         label="Eliminar"
+  //         onClick={() => handleDeleteAsset(params.id)}
+  //       />,
+  //     ],
+  //   },
+  // ];
+
+  const actionColumn = {
+    field: "actions",
+    headerName: "Acciones",
+    type: "actions",
+    headerClassName: "super-app-theme--header",
+    minWidth: 100,
+    getActions: (params) => [
+      <GridActionsCellItem
+        icon={<EditIcon />}
+        label="Editar"
+        color="secondary"
+        onClick={() => handleEditClick(params.row)}
+      />,
+      <GridActionsCellItem
+        icon={<DeleteIcon />}
+        label="Eliminar"
+        onClick={() => handleDeleteAsset(params.id)}
+      />,
+    ],
+  };
+
+  const updatedColumns = [...columns, actionColumn];
 
   // Toolbar personalizada
   const CustomToolbar = () => {
@@ -161,13 +194,21 @@ export default function AssetDataGrid() {
       </GridToolbarContainer>
     );
   };
+  // const CustomToolbar = () => (
+  //   <GridToolbarContainer>
+  //     <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClick}>
+  //       Agregar
+  //     </Button>
+  //   </GridToolbarContainer>
+  // );
 
   return (
     <>
       <DataGrid
         autoHeight
         rows={rows}
-        columns={columns}
+        getRowId={(row) => row._id}
+        columns={updatedColumns}
         getRowClassName={(params) =>
           params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
         }
@@ -180,7 +221,9 @@ export default function AssetDataGrid() {
         slots={{ toolbar: CustomToolbar }}
       />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Agregar nuevo activo</DialogTitle>
+        <DialogTitle>
+          {isEditing ? "Editar Activo" : "Agregar nuevo activo"}
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -195,6 +238,18 @@ export default function AssetDataGrid() {
             onChange={(e) => setNewName(e.target.value)}
           />
           <TextField
+            autoFocus
+            required
+            id="description"
+            name="description"
+            margin="dense"
+            label="Descripción del Activo"
+            fullWidth
+            variant="standard"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+          />
+          <TextField
             margin="dense"
             required
             id="ip"
@@ -205,6 +260,20 @@ export default function AssetDataGrid() {
             value={newIp}
             onChange={(e) => setNewIp(e.target.value)}
           />
+          <FormControl fullWidth margin="dense" sx={{ mt: 3 }}>
+            <InputLabel htmlFor="status-label">Estado</InputLabel>
+            <Select
+              autoFocus
+              labelId="status-label"
+              id="status"
+              required
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+            >
+              <MenuItem value="activo">Activo</MenuItem>
+              <MenuItem value="inactivo">Inactivo</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>

@@ -11,10 +11,7 @@ export default function MainPage() {
   return (
     <Box
       sx={{
-        width: "1250px",
-        maxWidth: { sm: "100%", md: "100%" },
-        px: 5,
-        mx: "auto",
+        width: "100%",
       }}
     >
       {/* cards */}
@@ -26,10 +23,15 @@ export default function MainPage() {
         {getOptionTextByKey(assetItems, "assets")}
       </Typography>
       <Grid container columns={12}>
-        <Grid size={{ md: 12, lg: 12 }}>
-          <Box sx={{ width: "100%" }}>
-            <AssetDataGrid />
-          </Box>
+        <Grid
+          size={{ md: 12, lg: 12 }}
+          sx={{
+            "& .super-app-theme--header": {
+              backgroundColor: "rgba(90, 104, 133, 0.55)",
+            },
+          }}
+        >
+          <AssetDataGrid />
         </Grid>
       </Grid>
       <Copyright sx={{ my: 4 }} />

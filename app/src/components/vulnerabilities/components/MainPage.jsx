@@ -13,20 +13,26 @@ export default function MainPage() {
       sx={{
         width: "100%",
         // maxWidth: { sm: "100%", md: "100%" },
-        margin: 0,
-        "& .super-app-theme--header": {
-          backgroundColor: "rgb(90, 104, 133)",
-          color: "white",
-        },
       }}
     >
       {/* cards */}
-      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+      <Typography
+        component="h2"
+        variant="h6"
+        sx={{ mb: 2, textAlign: "center" }}
+      >
         {getOptionTextByKey(vulnsItems, "vulnerabilities")}
       </Typography>
 
       <Grid container columns={12}>
-        <Grid size={{ md: 12, lg: 12 }}>
+        <Grid
+          size={{ md: 12, lg: 12 }}
+          sx={{
+            "& .super-app-theme--header": {
+              backgroundColor: "rgba(90, 104, 133, 0.55)",
+            },
+          }}
+        >
           <VulnDataGrid />
         </Grid>
       </Grid>
