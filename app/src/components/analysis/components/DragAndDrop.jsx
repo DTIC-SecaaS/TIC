@@ -6,7 +6,7 @@ import AnalysisSettings from "./AnalysisSettings";
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_ASSETS_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Identificador para el tipo de elemento draggable
@@ -93,7 +93,7 @@ const DragAndDrop = () => {
   const loadAssets = async () => {
     try {
       // const response = await apiClient.get("?status=active"); // Cambia la URL según tu API
-      const response = await apiClient.get(); // Cambia la URL según tu API
+      const response = await apiClient.get("/assets"); // Cambia la URL según tu API
       setAssets(response.data.data); // Asumiendo que la respuesta es un array de activos
     } catch (error) {
       console.error("Error al cargar los activos:", error);

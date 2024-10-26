@@ -13,166 +13,163 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InputLabel from "@mui/material/InputLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { useLayersData } from "../../layers/internals/gridDataLayers";
+import { getOptionTextByKey, analysisItems } from "../../../constants/consts";
+import Button from "@mui/material/Button";
 
 export default function SelectSmall() {
-  const [age, setAge] = React.useState("");
+  const { rows } = useLayersData();
+  const [selectedLayer, setSelectedLayer] = React.useState("ninguna");
+  const [customizeTools, setCustomizeTools] = React.useState(false);
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setSelectedLayer(event.target.value);
+  };
+
+  const handleSwitchChange = (event) => {
+    setCustomizeTools(event.target.checked);
+  };
+
+  const handleButtonClick = () => {
+    console.log("Botón clickeado");
   };
 
   return (
     <FormGroup>
-      {/* Primera fila con Select alineado a la izquierda, etiqueta y Switch alineado a la derecha */}
       <Grid container spacing={2}>
-        {/* Contenedor para la etiqueta "Seleccionar" y el Select */}
-        <Grid
-          size={6}
-          container
-          alignItems="start"
-          sx={{ backgroundColor: "yellow", px: 2 }}
-        >
-          {/* Etiqueta "Seleccionar" alineada verticalmente al centro */}
-          <InputLabel sx={{ mr: 2, py: 1 }}>¿Capa límite?</InputLabel>
+        <Grid size={6} container alignItems="start" sx={{ px: 2 }}>
+          <InputLabel sx={{ mr: 2, py: 1 }}>
+            {getOptionTextByKey(analysisItems, "limitLayer")}
+          </InputLabel>
           <FormControl sx={{ minWidth: 130, py: 1 }} size="small">
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
-              value={age}
-              label="Age"
+              value={selectedLayer}
               onChange={handleChange}
             >
-              <MenuItem value="">
-                <em>None</em>
+              <MenuItem value="ninguna" key="ninguna">
+                <em>{getOptionTextByKey(analysisItems, "none")}</em>
               </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {rows.length > 0 &&
+                rows.map((layer) => (
+                  <MenuItem key={layer._id} value={layer._id}>
+                    {layer.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Grid>
-        {/* Switch alineado a la derecha */}
-        <Grid
-          size={6}
-          container
-          justifyContent="end"
-          sx={{ backgroundColor: "green", px: 2 }}
-        >
+
+        <Grid size={6} container justifyContent="end" sx={{ px: 2 }}>
           <FormControlLabel
-            control={<Switch defaultChecked size="small" />}
-            label="Personalizar herramientas de análisis"
+            control={
+              <Switch
+                checked={customizeTools}
+                onChange={handleSwitchChange}
+                size="small"
+              />
+            }
+            label={getOptionTextByKey(analysisItems, "customizeTools")}
             labelPlacement="start"
           />
         </Grid>
       </Grid>
 
-      {/* Segunda fila con Accordion */}
-      {/* <Grid container spacing={2} alignItems="center" sx={{ mt: 2 }}>
-        <Grid item xs={12}>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>Acordeón</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Contenido del acordeón. Puedes poner aquí el texto que desees
-                mostrar al expandirlo.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+      {customizeTools && (
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid xs={12} sx={{ width: "100%" }}>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <Typography>Item 1</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <FormGroup>
+                  {[...Array(6)].map((_, index) => (
+                    <FormControlLabel
+                      key={index}
+                      control={<Checkbox />}
+                      label={`Opción ${index + 1}`}
+                    />
+                  ))}
+                </FormGroup>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2-content"
+                id="panel2-header"
+              >
+                <Typography>Item 2</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <FormGroup>
+                  {[...Array(6)].map((_, index) => (
+                    <FormControlLabel
+                      key={index}
+                      control={<Checkbox />}
+                      label={`Opción ${index + 1}`}
+                    />
+                  ))}
+                </FormGroup>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel3-content"
+                id="panel3-header"
+              >
+                <Typography>Item 3</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <FormGroup>
+                  {[...Array(6)].map((_, index) => (
+                    <FormControlLabel
+                      key={index}
+                      control={<Checkbox />}
+                      label={`Opción ${index + 1}`}
+                    />
+                  ))}
+                </FormGroup>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion defaultExpanded>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel4-content"
+                id="panel4-header"
+              >
+                <Typography>Item 4</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <FormGroup>
+                  {[...Array(6)].map((_, index) => (
+                    <FormControlLabel
+                      key={index}
+                      control={<Checkbox />}
+                      label={`Opción ${index + 1}`}
+                    />
+                  ))}
+                </FormGroup>
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
         </Grid>
-      </Grid> */}
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        {/* Reemplaza el div por un Grid item */}
-        <Grid xs={12} sx={{ width: "100%" }}>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <Typography>Item 1</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
-                {[...Array(6)].map((_, index) => (
-                  <FormControlLabel
-                    key={index}
-                    control={<Checkbox />}
-                    label={`Opción ${index + 1}`}
-                  />
-                ))}
-              </FormGroup>
-            </AccordionDetails>
-          </Accordion>
+      )}
 
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              <Typography>Item 2</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
-                {[...Array(6)].map((_, index) => (
-                  <FormControlLabel
-                    key={index}
-                    control={<Checkbox />}
-                    label={`Opción ${index + 1}`}
-                  />
-                ))}
-              </FormGroup>
-            </AccordionDetails>
-          </Accordion>
-
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel3-content"
-              id="panel3-header"
-            >
-              <Typography>Item 3</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
-                {[...Array(6)].map((_, index) => (
-                  <FormControlLabel
-                    key={index}
-                    control={<Checkbox />}
-                    label={`Opción ${index + 1}`}
-                  />
-                ))}
-              </FormGroup>
-            </AccordionDetails>
-          </Accordion>
-
-          <Accordion defaultExpanded>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel4-content"
-              id="panel4-header"
-            >
-              <Typography>Item 4</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
-                {[...Array(6)].map((_, index) => (
-                  <FormControlLabel
-                    key={index}
-                    control={<Checkbox />}
-                    label={`Opción ${index + 1}`}
-                  />
-                ))}
-              </FormGroup>
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
+      <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
+        <Button variant="contained" color="primary" onClick={handleButtonClick}>
+          {getOptionTextByKey(analysisItems, "analize")}
+        </Button>
       </Grid>
     </FormGroup>
   );

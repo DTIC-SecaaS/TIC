@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "../../shared/ToastService";
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_ASSETS_API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 export const columns = [
@@ -48,25 +48,25 @@ export const columns = [
 
 // // Función para obtener los activos desde la API
 export const fetchAssets = async () => {
-  const response = await apiClient.get(); // Ajusta la URL según tu configuración
+  const response = await apiClient.get("/assets"); // Ajusta la URL según tu configuración
   return response.data;
 };
 
 // Función para agregar un nuevo activo
 export const addAsset = async (newAsset) => {
-  const response = await apiClient.post("", newAsset); // Ajusta la URL según tu configuración
+  const response = await apiClient.post("/assets", newAsset); // Ajusta la URL según tu configuración
   return response.data;
 };
 
 // Función para editar un activo
 export const updateAsset = async (id, updatedAsset) => {
-  const response = await apiClient.put(`/${id}`, updatedAsset); // Ajusta la URL según tu configuración
+  const response = await apiClient.put(`/assets/${id}`, updatedAsset); // Ajusta la URL según tu configuración
   return response.data;
 };
 
 // Función para eliminar un activo
 export const deleteAsset = async (id) => {
-  await apiClient.delete(`/${id}`); // Ajusta la URL según tu configuración
+  await apiClient.delete(`/assets/${id}`); // Ajusta la URL según tu configuración
 };
 
 export const useAssetsData = () => {

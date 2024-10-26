@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import BaseLayout from "../BaseLayout/BaseLayout";
-import AnalysisPage from "./components/AnalysisPage";
+import LayersPage from "./components/LayersPage";
 
-export default function Analysis() {
-  const [currentMenu, setCurrentMenu] = useState("analysis");
+export default function Layers() {
+  const [currentMenu, setCurrentMenu] = useState("layers");
 
   const handleMenuClick = (menuKey) => {
     setCurrentMenu(menuKey);
@@ -11,7 +11,7 @@ export default function Analysis() {
 
   return (
     <BaseLayout currentMenu={currentMenu} onMenuClick={handleMenuClick}>
-      <AnalysisPage />
+      <LayersPage />
     </BaseLayout>
   );
 }

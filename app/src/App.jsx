@@ -13,6 +13,7 @@ import Vulnerabilities from "./components/vulnerabilities/Vulnerabilities";
 import NotFoundPage from "./components/pageNotFound/PageNotFound";
 import Assets from "./components/assets/Assets";
 import Analysis from "./components/analysis/Analysis";
+import Layers from "./components/layers/Layers";
 
 function App() {
   return (
@@ -56,9 +57,14 @@ const AuthRoutes = () => {
         path="/analysis"
         element={isAuthenticated ? <Analysis /> : <Navigate to="/" />}
       />
+      <Route
+        path="/layers"
+        element={isAuthenticated ? <Layers /> : <Navigate to="/" />}
+      />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };
 
 export default App;
+//TODO concatenar todos los analisis, vulnerabilidades y activos con el usuario
