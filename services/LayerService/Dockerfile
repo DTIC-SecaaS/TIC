@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exponer el puerto en el que la aplicación se ejecutará
-EXPOSE 5001
+EXPOSE 5002
 
 # Comando para ejecutar la aplicación
 CMD ["python", "app.py"]

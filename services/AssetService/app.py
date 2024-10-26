@@ -11,4 +11,4 @@ CORS(app, resources={r"/api/*": {"origins": app_url}})
 app.register_blueprint(assets_bp, url_prefix='/api')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)

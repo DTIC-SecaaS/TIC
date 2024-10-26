@@ -18,7 +18,7 @@ venv/
 *.bak
 
 # Ignorar archivos de entorno
-.env
+# .env
 
 # Ignorar archivos de caché de python
 *.pyc
