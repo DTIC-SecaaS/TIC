@@ -2,6 +2,8 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import AnalyticsRoundedIcon from "@mui/icons-material/AnalyticsRounded";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import TroubleshootRoundedIcon from "@mui/icons-material/TroubleshootRounded";
+import LayersRoundedIcon from "@mui/icons-material/LayersRounded";
 // import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 // import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 
@@ -18,6 +20,18 @@ export const menuContentMainItems = [
     text: "Activos",
     icon: <AssignmentRoundedIcon />,
     route: "/assets",
+  },
+  {
+    key: "analysis",
+    text: "Análisis",
+    icon: <TroubleshootRoundedIcon />,
+    route: "/analysis",
+  },
+  {
+    key: "layers",
+    text: "Capas de red",
+    icon: <LayersRoundedIcon />,
+    route: "/layers",
   },
 ];
 
@@ -44,6 +58,8 @@ export const optionsAppNavbar = [
   { key: "vulnerabilities", text: "Vulnerabilidades", route: "/vulns" },
   { key: "assets", text: "Activos", route: "/assets" },
   { key: "settings", text: "Configuración", route: "/settings" },
+  { key: "analysis", text: "Análisis", route: "/analysis" },
+  { key: "layers", text: "Capas de red", route: "/layers" },
 ];
 
 export const notificationsItems = [
@@ -80,6 +96,41 @@ export const vulnsItems = [
   { key: "risk", text: "Riesgo" },
   { key: "service", text: "Servicio" },
   { key: "vulnerabilities", text: "Vulnerabilidades" },
+];
+
+export const assetItems = [
+  { key: "assets", text: "Activos" },
+  { key: "name", text: "Nombre" },
+  { key: "ip", text: "URL / IP" },
+  { key: "description", text: "Descripción" },
+  { key: "status", text: "Estado" },
+];
+
+export const analysisItems = [
+  { key: "analysis", text: "Análisis" },
+  { key: "name", text: "Nombre" },
+  { key: "ip", text: "URL / IP" },
+  { key: "limitLayer", text: "¿Capa límite?" },
+  { key: "none", text: "Ninguna" },
+  { key: "analize", text: "Analizar" },
+  { key: "customizeTools", text: "Personalizar herramientas de análisis" },
+];
+
+export const layerItems = [
+  { key: "layers", text: "Capas de red" },
+  { key: "name", text: "Nombre" },
+  // { key: "ip", text: "URL / IP" },
+  // { key: "description", text: "Descripción" },
+  { key: "status", text: "Estado" },
+  { key: "edit", text: "Editar Capa de Red" },
+  { key: "add", text: "Agregar Nueva Capa de Red" },
+  { key: "layerName", text: "Nombre de la Capa" },
+  { key: "layerDescription", text: "Descripción de la Capa" },
+  { key: "status", text: "Estado" },
+  { key: "active", text: "Activo" },
+  { key: "inactive", text: "Inactivo" },
+  { key: "cancel", text: "Cancelar" },
+  { key: "save", text: "Guardar" },
 ];
 
 export const getOptionTextByKey = (options, key) => {
