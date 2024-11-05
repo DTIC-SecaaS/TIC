@@ -14,6 +14,8 @@ import NotFoundPage from "./components/pageNotFound/PageNotFound";
 import Assets from "./components/assets/Assets";
 import Analysis from "./components/analysis/Analysis";
 import Layers from "./components/layers/Layers";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 function App() {
   return (
@@ -32,7 +34,25 @@ const AuthRoutes = () => {
   const { isAuthenticated, isKeycloakInitialized } = useAuthContext();
 
   if (!isKeycloakInitialized) {
-    return <p>Loading...</p>; // O cualquier otro indicador de carga que desees
+    // return <p>Loading...</p>;
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          bgcolor: "rgba(255, 255, 255, 0.8)",
+          zIndex: 9999,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
