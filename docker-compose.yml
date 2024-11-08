@@ -20,6 +20,7 @@ services:
     depends_on:
       - assetservice
       - layerservice
+      - nmapservice
     networks: 
       - tic_network
 
@@ -48,7 +49,29 @@ services:
       - tic_network
     environment:
       - FLASK_ENV=development
+  
+  nmapservice:
+    build:
+      context: ./services/NmapService
+    container_name: nmapservice
+    env_file:
+      - ./services/.env
+    depends_on:
+      - mongodb
+      - redis
+    networks: 
+      - tic_network
+    environment:
+      - FLASK_ENV=development
 
+  celery_worker:
+    build:
+      context: ./services/NmapService
+    container_name: nmapservice
+    env_file:
+      - ./services/.env
+    depends_on:
+      - redis
   # frontend:
   #   build:
   #     context: ./app
@@ -72,6 +95,14 @@ services:
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
     command: start-dev
     networks: 
+      - tic_network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
       - tic_network
 
 networks:
