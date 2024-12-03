@@ -2,6 +2,7 @@ from celery import Celery
 import nmap
 from repository.repository import NmapRepository
 import os
+import datetime
 
 nmap_repository = NmapRepository()
 
@@ -16,7 +17,7 @@ celery = Celery(
     broker=CELERY_RESULT_BACKEND
 )
 
-@celery.task(bind=True)
+@celery.task(name="tasks.perform_nmap_scan", bind=True, queue="nmap_queue")
 def perform_nmap_scan(self, target):
     nm = nmap.PortScanner()
     scan_args = "-sS -A -p- -T4 -Pn --script vuln"
@@ -51,7 +52,9 @@ def perform_nmap_scan(self, target):
     # Guardar el resultado en MongoDB
     nmap_repository.save_scan_results({
         "target": target,
-        "scan_results": scan_results
+        "scan_results": scan_results,
+        "herramienta": "Nmap",
+        "fecha": datetime.datetime.now()
     })
 
     return {'result': scan_results}

@@ -1,9 +1,9 @@
 from bson import ObjectId
 from config.config import get_database
-from models.model import NmapModel
+from models.model import WapitiModel
 from pymongo import errors
 
-class NmapRepository:
+class WapitiRepository:
     def __init__(self):
         self.db = get_database()
         self.collection = self.db['escaneos']
@@ -19,9 +19,9 @@ class NmapRepository:
         if scan:
             scan['_id'] = str(scan['_id'])
         return scan
-
+    
     def save_scan_results(self, data):
-        scan = NmapModel(
+        scan = WapitiModel(
             target = data['target'],
             scan_results = data['scan_results'],
             herramienta = data['herramienta'],
@@ -34,4 +34,3 @@ class NmapRepository:
         except errors.PyMongoError as e:
             print(f"Error al guardar los resultados del escaneo: {e}")
             return None
-

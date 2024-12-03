@@ -1,8 +1,8 @@
-class NmapModel:
+class WapitiModel:
     def __init__(self, target, scan_results, herramienta, fecha):
         self.target = target
-        self.scan_results = scan_results
-        self.herramienta = herramienta
+        self.scan_results = scan_results,
+        self.herramienta = herramienta,
         self.fecha = fecha
 
     def to_dict(self):
