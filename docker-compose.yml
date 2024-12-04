@@ -30,8 +30,8 @@ services:
     container_name: assetservice
     env_file:
       - ./services/.env
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     networks: 
       - tic_network
     environment:
@@ -43,8 +43,8 @@ services:
     container_name: layerservice
     env_file:
       - ./services/.env
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     networks: 
       - tic_network
     environment:
@@ -57,7 +57,7 @@ services:
     env_file:
       - ./services/.env
     depends_on:
-      - mongodb
+      # - mongodb
       - redis
     networks: 
       - tic_network
@@ -72,7 +72,7 @@ services:
     command: celery -A app.tasks worker --loglevel=info --queues=nmap_queue -n nmap_worker
     depends_on:
       - redis
-      - mongodb
+      # - mongodb
     env_file:
       - ./services/.env
     networks: 
@@ -87,7 +87,7 @@ services:
     env_file:
       - ./services/.env
     depends_on:
-      - mongodb
+      # - mongodb
       - redis
     networks: 
       - tic_network
@@ -101,7 +101,68 @@ services:
     command: celery -A app.tasks worker --loglevel=info --queues=wapiti_queue -n wapiti_worker
     depends_on:
       - redis
-      - mongodb
+      # - mongodb
+    env_file:
+      - ./services/.env
+    networks: 
+      - tic_network
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+  
+  niktoservice:
+    build:
+      context: ./services/NiktoService
+    container_name: niktoservice
+    env_file:
+      - ./services/.env
+    depends_on:
+      # - mongodb
+      - redis
+    networks: 
+      - tic_network
+    environment:
+      - FLASK_ENV=development
+
+  niktoworker:
+    build:
+      context: ./services/NiktoService
+    container_name: niktoworker
+    command: celery -A app.tasks worker --loglevel=info --queues=nikto_queue -n nikto_worker
+    depends_on:
+      - redis
+      # - mongodb
+    env_file:
+      - ./services/.env
+    networks: 
+      - tic_network
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+
+  masterservice:
+    build:
+      context: ./services/MasterService
+    container_name: masterservice
+    env_file:
+      - ./services/.env
+    depends_on:
+      # - mongodb
+      - redis
+      - niktoservice
+      - nmapservice
+      - wapitiservice
+    networks: 
+      - tic_network
+    environment:
+      - FLASK_ENV=development
+
+  masterworker:
+    build:
+      context: ./services/MasterService
+    container_name: masterworker
+    command: celery -A app.tasks worker --loglevel=info --queues=master_queue -n master_worker
+    depends_on:
+      - redis
+      # - mongodb
     env_file:
       - ./services/.env
     networks: 
@@ -126,13 +187,13 @@ services:
   #     context: ./app
   #   ports:
   #     - "3000:3000"
-  mongodb:
-    container_name: mongodb
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    networks: 
-      - tic_network
+  # mongodb:
+  #   container_name: mongodb
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017:27017"
+  #   networks: 
+  #     - tic_network
 
   # keycloak:
   #   container_name: keycloak
