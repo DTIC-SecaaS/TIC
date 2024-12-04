@@ -18,4 +18,5 @@ COPY . .
 EXPOSE 5004
 
 # # Ejecutar la aplicación
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
+CMD ["celery", "-A", "app.tasks", "worker", "--loglevel=info", "--queues=wapiti_queue", "-n", "wapiti_worker"]

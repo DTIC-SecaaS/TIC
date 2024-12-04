@@ -21,4 +21,5 @@ COPY . .
 EXPOSE 5005
 
 # # Ejecutar la aplicación
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
+CMD ["celery", "-A", "app.tasks", "worker", "--loglevel=info", "--queues=nikto_queue", "-n", "nikto_worker"]

@@ -15,9 +15,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exponer el puerto 5000 para la aplicación Flask
-EXPOSE 5003
+# EXPOSE 5003
 
 # # Ejecutar la aplicación
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
 # Definir el comando por defecto para iniciar Celery (esto reemplaza el CMD para Flask)
 # CMD ["celery", "-A", "app.celery", "worker", "--loglevel=info"]
+CMD ["celery", "-A", "app.tasks", "worker", "--loglevel=info", "--queues=nmap_queue", "-n", "nmap_worker"]
