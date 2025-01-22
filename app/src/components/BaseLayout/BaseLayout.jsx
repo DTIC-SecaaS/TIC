@@ -28,7 +28,7 @@ const BaseLayout = ({ currentMenu, onMenuClick, children }) => {
       <CssBaseline enableColorScheme />
       <Box sx={{ display: "flex", width: "100vw" }}>
         <SideMenu onMenuClick={onMenuClick} />
-        <AppNavbar />
+        <AppNavbar onMenuClick={onMenuClick} />
         <Box
           component="main"
           sx={(theme) => ({

@@ -90,6 +90,16 @@ export const useAssetsData = () => {
   }, []);
 
   const handleAddAsset = async (newAsset) => {
+    // Validar que ningún campo contenga caracteres peligrosos
+    const forbiddenPattern = /[';]/;
+    if (Object.values(newAsset).some((value) => forbiddenPattern.test(value))) {
+      toast.show(
+        "Los datos del activo contienen caracteres no permitidos (' ;).",
+        "error"
+      );
+      return;
+    }
+
     try {
       await addAsset(newAsset);
       await loadAssets(); // Recargar activos después de agregar

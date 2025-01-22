@@ -1,57 +1,3 @@
-// import * as React from "react";
-// import { DataGrid } from "@mui/x-data-grid";
-// import { columns, rows } from "../internals/data/gridDataVulns";
-
-// export default function AssetDataGrid() {
-//   return (
-//     <DataGrid
-//       autoHeight
-//       // checkboxSelection
-//       rows={rows}
-//       columns={columns}
-//       getRowClassName={(params) =>
-//         params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-//       }
-//       initialState={{
-//         pagination: { paginationModel: { pageSize: 10 } },
-//       }}
-//       pageSizeOptions={[10, 20, 50]}
-//       disableColumnResize
-//       density="compact"
-//       //loading
-//       slotProps={{
-//         filterPanel: {
-//           filterFormProps: {
-//             logicOperatorInputProps: {
-//               variant: "outlined",
-//               size: "small",
-//             },
-//             columnInputProps: {
-//               variant: "outlined",
-//               size: "small",
-//               sx: { mt: "auto" },
-//             },
-//             operatorInputProps: {
-//               variant: "outlined",
-//               size: "small",
-//               sx: { mt: "auto" },
-//             },
-//             valueInputProps: {
-//               InputComponentProps: {
-//                 variant: "outlined",
-//                 size: "small",
-//               },
-//             },
-//           },
-//         },
-//         // loadingOverlay: {
-//         //   variant: "skeleton",
-//         //   noRowsVariant: "skeleton",
-//         // },
-//       }}
-//     />
-//   );
-// }
 import * as React from "react";
 import {
   DataGrid,
@@ -81,7 +27,7 @@ export default function AssetDataGrid() {
   const [newName, setNewName] = React.useState("");
   const [newIp, setNewIp] = React.useState("");
   const [newDescription, setNewDescription] = React.useState("");
-  const [newStatus, setNewStatus] = React.useState("Inactivo");
+  const [newStatus, setNewStatus] = React.useState("inactivo");
 
   const { rows, handleAddAsset, handleUpdateAsset, handleDeleteAsset } =
     useAssetsData();
@@ -194,13 +140,6 @@ export default function AssetDataGrid() {
       </GridToolbarContainer>
     );
   };
-  // const CustomToolbar = () => (
-  //   <GridToolbarContainer>
-  //     <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClick}>
-  //       Agregar
-  //     </Button>
-  //   </GridToolbarContainer>
-  // );
 
   return (
     <>
@@ -235,7 +174,9 @@ export default function AssetDataGrid() {
             fullWidth
             variant="standard"
             value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            onChange={(e) => setNewName(e.target.value.replace(/[';]/g, ""))}
+            error={/[';]/.test(newName)}
+            helperText="Caracteres no permitidos: ' ;"
           />
           <TextField
             autoFocus
@@ -247,7 +188,11 @@ export default function AssetDataGrid() {
             fullWidth
             variant="standard"
             value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
+            onChange={(e) =>
+              setNewDescription(e.target.value.replace(/[';]/g, ""))
+            }
+            error={/[';]/.test(newDescription)}
+            helperText="Caracteres no permitidos: ' ;"
           />
           <TextField
             margin="dense"
@@ -258,16 +203,19 @@ export default function AssetDataGrid() {
             fullWidth
             variant="standard"
             value={newIp}
-            onChange={(e) => setNewIp(e.target.value)}
+            onChange={(e) => setNewIp(e.target.value.replace(/[';]/g, ""))}
+            error={/[';]/.test(newIp)}
+            helperText="Caracteres no permitidos: ' ;"
           />
           <FormControl fullWidth margin="dense" sx={{ mt: 3 }}>
             <InputLabel htmlFor="status-label">Estado</InputLabel>
             <Select
               autoFocus
               labelId="status-label"
+              label="Estado"
               id="status"
               required
-              value={newStatus}
+              value={newStatus || "activo"}
               onChange={(e) => setNewStatus(e.target.value)}
             >
               <MenuItem value="activo">Activo</MenuItem>
@@ -277,7 +225,7 @@ export default function AssetDataGrid() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleSave} color="primary">
+          <Button onClick={handleSave} color="primary" label="guardar">
             Guardar
           </Button>
         </DialogActions>

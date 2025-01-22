@@ -12,16 +12,16 @@ const apiClient = axios.create({
 // Identificador para el tipo de elemento draggable
 const ITEM_TYPE = "ASSET";
 
-const Asset = ({ name, removeAsset }) => {
+const Asset = ({ asset, removeAsset }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     // Hook para hacer un elemento draggable
     type: ITEM_TYPE, // Tipo de elemento
-    item: { name }, // Datos del elemento
+    item: { ...asset }, // Datos del elemento
     end: (item, monitor) => {
       // Función que se ejecuta al soltar el elemento
       if (monitor.didDrop()) {
         // Si el elemento fue soltado en un área de drop
-        removeAsset(item.name); // Eliminar el activo cuando se suelte
+        removeAsset(item.id); // Eliminar el activo cuando se suelte
       }
     },
     collect: (monitor) => ({
@@ -37,7 +37,7 @@ const Asset = ({ name, removeAsset }) => {
       color="primary"
       style={{ margin: "8px 0", opacity: isDragging ? 0.5 : 1 }} // Cambiar la opacidad si el elemento está siendo arrastrado
     >
-      {name}
+      {asset.name}
     </Button>
   );
 };
@@ -47,7 +47,7 @@ const DropArea = ({ onDrop, droppedAsset }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     // Hook para hacer un área de drop
     accept: ITEM_TYPE, // Tipo de elemento que se puede soltar
-    drop: (item) => onDrop(item.name), // Función que se ejecuta al soltar un elemento
+    drop: (item) => onDrop(item), // Función que se ejecuta al soltar un elemento
     collect: (monitor) => ({
       // Función para recolectar información sobre el estado del área de drop
       isOver: !!monitor.isOver(), // Indicar si un elemento está siendo arrastrado sobre el área de drop
@@ -75,7 +75,7 @@ const DropArea = ({ onDrop, droppedAsset }) => {
           color="primary"
           onClick={() => onDrop(null)} // Eliminar el activo al hacer clic
         >
-          {droppedAsset} X
+          {droppedAsset.name} X
         </Button>
       ) : (
         <Typography variant="body2" color="textSecondary">
@@ -95,6 +95,7 @@ const DragAndDrop = () => {
       // const response = await apiClient.get("?status=active"); // Cambia la URL según tu API
       const response = await apiClient.get("/assets"); // Cambia la URL según tu API
       setAssets(response.data.data); // Asumiendo que la respuesta es un array de activos
+      console.log(assets);
     } catch (error) {
       console.error("Error al cargar los activos:", error);
     }
@@ -107,6 +108,7 @@ const DragAndDrop = () => {
   // Función para manejar la eliminación del activo al soltarlo
   const handleDrop = (asset) => {
     setDroppedAsset(asset); // Establecer el activo que se ha soltado
+    console.log(asset);
   };
 
   // Función para eliminar el activo de la lista
@@ -145,7 +147,7 @@ const DragAndDrop = () => {
             <DropArea onDrop={handleDrop} droppedAsset={droppedAsset} />
           </Box>
           <Box sx={{ p: 3 }}>
-            <AnalysisSettings />
+            <AnalysisSettings asset={droppedAsset} />
           </Box>
         </Grid>
         <Grid
@@ -158,11 +160,7 @@ const DragAndDrop = () => {
             Activos
           </Typography>
           {assets.map((asset) => (
-            <Asset
-              key={asset.name}
-              name={asset.name}
-              removeAsset={removeAsset}
-            />
+            <Asset key={asset.id} asset={asset} removeAsset={removeAsset} />
           ))}
         </Grid>
       </Grid>

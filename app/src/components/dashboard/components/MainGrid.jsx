@@ -14,7 +14,7 @@ import StatCard from "./StatCard";
 import { dashboardItems, getOptionTextByKey } from "../../../constants/consts";
 
 const data = [
-  {
+  /*{
     title: getOptionTextByKey(dashboardItems, "users"),
     value: "14k",
     interval: "últimos 30 días",
@@ -24,9 +24,9 @@ const data = [
       380, 360, 400, 380, 420, 400, 640, 340, 460, 440, 480, 460, 600, 880, 920,
       33,
     ],
-  },
+  },*/
   {
-    title: "Conversions",
+    title: "Analisis realizados",
     value: "325",
     interval: "Last 30 days",
     trend: "down",
@@ -52,7 +52,11 @@ export default function MainGrid() {
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "100%" } }}>
       {/* cards */}
-      <Typography component="h2" variant="h6" sx={{ mb: 2, textAlign: "center" }}>
+      <Typography
+        component="h2"
+        variant="h6"
+        sx={{ mb: 2, textAlign: "center" }}
+      >
         {getOptionTextByKey(dashboardItems, "overview")}
       </Typography>
       <Grid

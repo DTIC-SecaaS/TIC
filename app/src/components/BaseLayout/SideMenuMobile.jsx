@@ -12,7 +12,7 @@ import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 import { optionsUserProfile, getOptionTextByKey } from "../../constants/consts";
 
-function SideMenuMobile({ open, toggleDrawer }) {
+export default function SideMenuMobile({ open, toggleDrawer, onMenuClick }) {
   const fullName = "Riley Carter";
   const dividedFullName = fullName.split(" ");
   let initials = " ";
@@ -61,7 +61,7 @@ function SideMenuMobile({ open, toggleDrawer }) {
         </Stack>
         <Divider />
         <Stack sx={{ flexGrow: 1 }}>
-          <MenuContent />
+          <MenuContent onMenuClick={onMenuClick} />
           <Divider />
         </Stack>
         {/* <CardAlert /> */}
@@ -84,4 +84,4 @@ SideMenuMobile.propTypes = {
   toggleDrawer: PropTypes.func.isRequired,
 };
 
-export default SideMenuMobile;
+// export default SideMenuMobile;

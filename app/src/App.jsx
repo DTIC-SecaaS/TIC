@@ -16,6 +16,7 @@ import Analysis from "./components/analysis/Analysis";
 import Layers from "./components/layers/Layers";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import DinamicReport from "./components/DinamicReport/DinamicReport";
 
 function App() {
   return (
@@ -80,6 +81,10 @@ const AuthRoutes = () => {
       <Route
         path="/layers"
         element={isAuthenticated ? <Layers /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/report"
+        element={isAuthenticated ? <DinamicReport /> : <Navigate to="/" />}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
