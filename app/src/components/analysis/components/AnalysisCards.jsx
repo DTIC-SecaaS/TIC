@@ -13,8 +13,11 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import Copyright from "../../shared/Copyright";
 import PropTypes from "prop-types";
+import { Reporte } from "../reportComponents/Reporte";
 
 const AnalysisCards = ({ onNewAnalysis }) => {
   const [analyses, setAnalyses] = useState([
@@ -60,7 +63,7 @@ const AnalysisCards = ({ onNewAnalysis }) => {
   const handleViewDetails = (analysis) => {
     setSelectedAnalysis(analysis);
   };
-
+  const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => {
     setSelectedAnalysis(null);
   };
@@ -132,13 +135,15 @@ const AnalysisCards = ({ onNewAnalysis }) => {
                   )}
                 </CardContent>
                 <CardActions sx={{ justifyContent: "flex-end", padding: 2 }}>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => handleViewDetails(analysis)}
-                  >
-                    Ver detalles
-                  </Button>
+                  {analysis.status === "completed" && ( // Muestra el botón solo si el status es 'completed'
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => handleViewDetails(analysis)}
+                    >
+                      Generar reporte
+                    </Button>
+                  )}
                 </CardActions>
               </Card>
             </Grid>
@@ -146,41 +151,58 @@ const AnalysisCards = ({ onNewAnalysis }) => {
         </Grid>
       </Box>
 
-      {/* Dialogo para mostrar detalles del análisis */}
-      <Dialog open={!!selectedAnalysis} onClose={handleCloseDialog}>
-        <DialogTitle>Detalles del Análisis</DialogTitle>
-        <DialogContent>
-          {selectedAnalysis && (
-            <>
-              <Typography
-                variant="body1"
-                sx={{ fontWeight: "bold", marginTop: 1 }}
+      <DndProvider backend={HTML5Backend}>
+        <div style={{ padding: "20px" }}>
+          {/* <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpenDialog}
+          >
+            Generar reporte
+          </Button> */}
+          <Dialog
+            open={!!selectedAnalysis}
+            onClose={handleCloseDialog}
+            fullScreen
+            PaperProps={{
+              sx: {
+                margin: 0,
+                maxWidth: "95%",
+                width: "85%",
+                height: "90%",
+              },
+            }}
+          >
+            <DialogTitle>
+              Selección de información para el reporte
+              <Button
+                onClick={handleCloseDialog}
+                color="secondary"
+                variant="outlined"
+                style={{ float: "right" }}
               >
-                Nombre: {selectedAnalysis.name}
-              </Typography>
-              <Typography variant="body2">
-                Hora de inicio: {selectedAnalysis.startTime}
-              </Typography>
-              <Typography variant="body2">
-                Activo analizado: {selectedAnalysis.active}
-              </Typography>
-              <Typography variant="body2">
-                Herramientas usadas:{" "}
-                {selectedAnalysis.tools?.join(", ") || "No especificadas"}
-              </Typography>
-              <Typography variant="body2">
-                Tiempo estimado de análisis:{" "}
-                {selectedAnalysis.estimatedTime || "Desconocido"}
-              </Typography>
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Cerrar
-          </Button>
-        </DialogActions>
-      </Dialog>
+                Cerrar
+              </Button>
+            </DialogTitle>
+            <DialogContent
+              sx={{
+                padding: 0,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "calc(100% - 64px)",
+              }}
+            >
+              {selectedAnalysis && (
+                <>
+                  <Reporte hideSourceOnDrag={true} />
+                  {/* <GenerateDocx /> */}
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>
+      </DndProvider>
 
       {/* Ubicar el Copyright al final */}
       <Copyright sx={{ marginTop: "auto", my: 4 }} />

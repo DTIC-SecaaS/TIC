@@ -35,7 +35,7 @@ const Asset = ({ asset, removeAsset }) => {
       ref={drag} // Referencia para hacer el elemento draggable
       variant="contained"
       color="primary"
-      style={{ margin: "8px 0", opacity: isDragging ? 0.5 : 1 }} // Cambiar la opacidad si el elemento está siendo arrastrado
+      style={{ margin: "8px 8px", opacity: isDragging ? 0.5 : 1 }} // Cambiar la opacidad si el elemento está siendo arrastrado
     >
       {asset.name}
     </Button>

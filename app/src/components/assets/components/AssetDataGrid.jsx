@@ -46,7 +46,7 @@ export default function AssetDataGrid() {
     setNewName("");
     setNewIp("");
     setNewDescription("");
-    setNewStatus(false);
+    setNewStatus("inactivo");
     setIsEditing(false);
     setOpen(true);
   };
