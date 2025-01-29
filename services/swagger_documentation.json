@@ -1,0 +1,127 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Vulnerability Scanner API",
+    "description": "API para ejecutar escaneos de seguridad utilizando Wapiti, Nikto y Nmap.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/wapiti_scan": {
+      "post": {
+        "summary": "Ejecutar escaneo con Wapiti",
+        "description": "Ejecuta un escaneo de seguridad en una URL dada utilizando Wapiti.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "URL objetivo para el escaneo."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Escaneo exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta"
+          }
+        }
+      }
+    },
+    "/nikto_scan": {
+      "post": {
+        "summary": "Ejecutar escaneo con Nikto",
+        "description": "Ejecuta un escaneo de seguridad en una URL dada utilizando Nikto.",
+        "parameters": [
+          {
+            "name": "target_url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "URL objetivo para el escaneo."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Escaneo exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta"
+          }
+        }
+      }
+    },
+    "/nmap_scan": {
+      "post": {
+        "summary": "Ejecutar escaneo con Nmap",
+        "description": "Ejecuta un escaneo de seguridad en una dirección IP o dominio utilizando Nmap.",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Dirección IP o dominio objetivo para el escaneo."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Escaneo exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta"
+          }
+        }
+      }
+    }
+  }
+}
